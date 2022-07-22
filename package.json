@@ -21,8 +21,8 @@
         },
         "./webauthn-rs-client.wasm": {
             "browser": "./build/browser/webauthn_rs_client_bg.wasm",
-            "node": "./build/node/webauthn_rs_client_bg.wasm"
-        }
+            "node": "./noop.js"
+          }
     },
     "devDependencies": {
         "rimraf": "^3.0.2"
