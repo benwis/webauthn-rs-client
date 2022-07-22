@@ -11,7 +11,7 @@
     },
     "sideEffects": false,
     "files": [
-        "build/*/**"
+        "build/*/**", "noop.js"
     ],
     "types": "./build/browser/webauthn_rs_client.d.ts",
     "exports": {
