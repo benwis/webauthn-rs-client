@@ -1,5 +1,7 @@
 # webauthn-rs-client
 
+*Sponsored by the lovely folks at Panda5!*
+
 ## Description
 This is a client for our implementation of a webauthn server, although it could be used for others.
 It is written in Rust, compiled to WASM, and mean to be called in an event handler or similiar place.
@@ -7,7 +9,7 @@ It is written in Rust, compiled to WASM, and mean to be called in an event handl
 It is closely tied to the example in the webauthn-rs repo, and we owe them a lot for doing such great
 work on it.
 
-It was tested with the Graphauth Webauthn server, and the Remix framework, although I can think of no
+It was tested with the example webauthn-rs servers, and the Remix framework, although I can think of no
 reason it wouldn't work in any other. The registration and login functions require access to the browser's
 Credentials and window, so it probably won't run in node without a lot of finagling.
 
