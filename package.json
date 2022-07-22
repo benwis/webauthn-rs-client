@@ -1,6 +1,6 @@
 {
     "name": "webauthn-rs-client",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "license": "MIT",
     "author": "Ben Wishovich <ben@benw.is>",
     "repository": "https://github.com/benwis/webauthn-rs-client",
@@ -22,7 +22,7 @@
         "./webauthn-rs-client.wasm": {
             "browser": "./build/browser/webauthn_rs_client_bg.wasm",
             "node": "./noop.js"
-          }
+        }
     },
     "devDependencies": {
         "rimraf": "^3.0.2"
