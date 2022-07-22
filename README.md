@@ -1,7 +1,5 @@
 # webauthn-rs-client
 
-*Sponsored by the lovely folks at Panda5!*
-
 ## Description
 This is a client for our implementation of a webauthn server, although it could be used for others.
 It is written in Rust, compiled to WASM, and mean to be called in an event handler or similiar place.
@@ -24,4 +22,9 @@ to be multi tenant.
 export function process_login(user_name: string, start_login_url: string, finish_login_url: string, tenant_name?: string): Promise<string>;
 ```
 process_login takes an user_name, two urls for the server endpoints, and an optional tenant_name. It is an async function that returns a random one-time authorization code as a string that can be handed to the server and used to get access and refresh tokens.
+
+## Special Thanks
+
+*Sponsored by the lovely folks at Panda5!*
+
 

@@ -3,7 +3,7 @@
     "version": "0.0.2",
     "license": "MIT",
     "author": "Ben Wishovich <ben@benw.is>",
-    "repository": "",
+    "repository": "https://github.com/benwis/webauthn-rs-client",
     "scripts": {
         "build": "npm run build:browser && npm run build:node",
         "build:browser": "wasm-pack build --target web --out-dir ./build/browser && rimraf ./build/browser/package.json",
@@ -11,7 +11,7 @@
     },
     "sideEffects": false,
     "files": [
-        "build"
+        "build/*/**"
     ],
     "types": "./build/browser/webauthn_rs_client.d.ts",
     "exports": {
