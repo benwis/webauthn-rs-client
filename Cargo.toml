@@ -1,0 +1,30 @@
+[package]
+name = "webauthn-rs-client"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = {version="0.2.81", features = ["serde-serialize"]}
+wasm-bindgen-futures = { version = "0.4" }
+webauthn-rs-proto = { version = "0.4.1-beta.1", features = ["wasm"] }
+url = "2"
+serde_json = "1.0"
+serde = { version = "1.0.138", features = ["derive"] }
+web-sys = { version = "0.3.58", features = [
+    "CredentialCreationOptions",
+    "CredentialRequestOptions",
+    "CredentialsContainer",
+    "Navigator",
+    "PublicKeyCredential",
+    "PublicKeyCredentialCreationOptions",
+    "Window", 
+    "RequestMode",
+    "RequestCredentials",  
+    "Headers",
+    "Response"
+] }
+thiserror = "1.0.31"
+gloo = "0.8.0"
