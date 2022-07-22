@@ -11,14 +11,13 @@ use web_sys::{Headers, Request, RequestCredentials, RequestInit, RequestMode, Re
 #[wasm_bindgen]
 /// This is the WASM accessible function that handles the authentication process
 pub async fn process_registration(
-    tenant_name: String,
     user_name: String,
     start_register_url: String,
     finish_register_url: String,
+    tenant_name: Option<String>,
 ) -> Result<(), JsError> {
     // Get CreationChallengeResponse from the server
-    let ccr =
-        get_creation_challenge_response(&tenant_name, &user_name, &start_register_url).await?;
+    let ccr = get_creation_challenge_response(tenant_name, &user_name, &start_register_url).await?;
     // Trigger the browser to sign it
     let rpkc = create_register_public_key_credential(ccr).await?;
     // Send it to the server for final verification and storage
@@ -27,7 +26,7 @@ pub async fn process_registration(
 }
 
 pub async fn get_creation_challenge_response(
-    tenant_name: &str,
+    tenant_name: Option<String>,
     user_name: &str,
     start_register_url: &str,
 ) -> Result<CreationChallengeResponse, WebauthnClientError> {
@@ -44,8 +43,13 @@ pub async fn get_creation_challenge_response(
     opts.headers(&headers);
     opts.credentials(RequestCredentials::Include);
 
+    // If there isn't a tenant name, hit the regular endpoint in the webauthn-rs example
     //default is format!("/register_start/{}", user_name)
-    let dest = format!("{}/{}/{}", start_register_url, tenant_name, user_name);
+    let dest = match tenant_name {
+        Some(tenant_name) => format!("{}/{}/{}", start_register_url, tenant_name, user_name),
+        None => format!("{}/{}", start_register_url, user_name),
+    };
+
     let request = Request::new_with_str_and_init(&dest, &opts)
         .map_err(|_| WebauthnClientError::ChallengeRequestError)?;
 
@@ -167,16 +171,17 @@ pub async fn send_register_public_key_credential(
 
 #[wasm_bindgen]
 pub async fn process_login(
-    tenant_name: String,
     user_name: String,
     start_login_url: String,
     finish_login_url: String,
+    tenant_name: Option<String>,
 ) -> Result<JsValue, JsError> {
     // Get RequestChallengeResponse from the server
-    let rcr = get_request_challenge_response(&tenant_name, &user_name, &start_login_url).await?;
+    let rcr = get_request_challenge_response(tenant_name, &user_name, &start_login_url).await?;
     // Trigger the browser to sign it
     let pkc = get_public_key_credential(rcr).await?;
     // Send it to the server for final verification
+
     let authorization_code =
         JsValue::from_serde(&send_public_key_credential(pkc, &finish_login_url).await?)?;
 
@@ -186,7 +191,7 @@ pub async fn process_login(
 /// The browser will receive a RequestChallengeResponse that needs to be passed to the browser
 /// API so the authenticator can sign it.
 pub async fn get_request_challenge_response(
-    tenant_name: &str,
+    tenant_name: Option<String>,
     user_name: &str,
     start_login_url: &str,
 ) -> Result<RequestChallengeResponse, WebauthnClientError> {
@@ -195,8 +200,12 @@ pub async fn get_request_challenge_response(
     opts.mode(RequestMode::Cors);
     opts.credentials(RequestCredentials::Include);
 
-    //default is format!("/login_start/{}", user_name)
-    let dest = format!("{}/{}/{}", start_login_url, tenant_name, user_name);
+    // default is format!("/login_start/{}", user_name)
+    let dest = match tenant_name {
+        Some(tenant_name) => format!("{}/{}/{}", start_login_url, tenant_name, user_name),
+        None => format!("{}/{}", start_login_url, user_name),
+    };
+
     let request = Request::new_with_str_and_init(&dest, &opts)
         .map_err(|_| WebauthnClientError::ChallengeRequestError)?;
 
